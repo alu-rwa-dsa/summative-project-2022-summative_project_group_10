@@ -1,5 +1,6 @@
 import pygame, sys
 import numpy as np
+import time
 
 pygame.init()
 
@@ -64,68 +65,69 @@ def is_display_full():
 
 # checks whether player has won the game
 def win_status(player):
+    result=False
     # vertical win check
     for col in range(3):
         if display[0][col] == player and display[1][col] == player and display[2][col] == player:
             vertical_match(col, player)
-            return True
+            result=True
 
     # horizontal win check
     for row in range(3):
         if display[row][0] == player and display[row][1] == player and display[row][2] == player:
             horizontal_match(row, player)
-            return True
+            result=True
 
     # diagonal win check
     if display[2][0] == player and display[1][1] == player and display[0][2] == player:  # first diagonal
         diagonal_match_one(player)
-        return True
+        result=True
 
     if display[0][0] == player and display[1][1] == player and display[2][2] == player:  # second diagonal
         diagonal_match_two(player)
-        return True
+        result=True
 
-    return False
+    return result
 
 
 def vertical_match(col, player):  # draws line to cut across wining entries
     position_x = col * (border) + (border) // 2
 
     if player == 1:
-        color = (255, 0, 0)
-    elif player == 2:
-        color = (255, 0, 0)
+        pygame.draw.line(board, (255, 255, 255), (position_x, 15), (position_x, 600 - 15), 5)
 
-    pygame.draw.line(board, color, (position_x, 15), (position_x, 600 - 15), 5)
+    elif player == 2:
+        pygame.draw.line(board, (255, 0, 0), (position_x, 15), (position_x, 600 - 15), 5)
+    return
 
 
 def horizontal_match(row, player):  # draws line to cut across wining entries
     position_y = row * (border) + (border) // 2
 
-    if player == 1:
-        color = (255, 255, 255)
-    elif player == 2:
-        color = (255, 0, 0)
 
-    pygame.draw.line(board, color, (15, position_y), (600 - 15, position_y), 10)
+    if player == 1:
+        pygame.draw.line(board, (255, 255, 255), (15, position_y), (600 - 15, position_y), 10)
+    elif player == 2:
+        pygame.draw.line(board, (255, 0, 0), (15, position_y), (600 - 15, position_y), 10)
+    return
 
 
 def diagonal_match_one(player):  # draws line to cut across wining entries
     if player == 1:
-        color = (255, 255, 255)
+        pygame.draw.line(board, (255, 255, 255), (15, 600 - 15), (600 - 15, 15), 10)
     elif player == 2:
-        color = (255, 0, 0)
+        pygame.draw.line(board, (255, 0, 0), (15, 600 - 15), (600 - 15, 15), 10)
 
-    pygame.draw.line(board, color, (15, 600 - 15), (600 - 15, 15), 10)
+    return
 
 
 def diagonal_match_two(player):  # draws line to cut across wining entries
     if player == 1:
-        color = (255, 255, 255)
+        pygame.draw.line(board, (255, 255, 255), (15, 15), (600 - 15, 600 - 15), 10)
     elif player == 2:
-        color = (255, 0, 0)
+        pygame.draw.line(board, (255, 0, 0), (15, 15), (600 - 15, 600 - 15), 10)
 
-    pygame.draw.line(board, color, (15, 15), (600 - 15, 600 - 15), 10)
+    return
 
 
 def restart_game():
@@ -142,12 +144,12 @@ def play_game():
     count = 0
     game_over = False
 
-    while True:
+    while game_over==False:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
-            if event.type == pygame.MOUSEBUTTONDOWN and not game_over:
+            if event.type == pygame.MOUSEBUTTONDOWN and game_over==False:
 
                 event_x_coordinate = event.pos[0]  # gets x-coordinate where player clicked on
                 event_y_coordinate = event.pos[1]  # gets y-coordinate where player clicked on
@@ -156,27 +158,30 @@ def play_game():
                 clicked_col = int(event_x_coordinate // (border))
 
                 if check_empty_square(clicked_row, clicked_col):
-
                     mark_square(clicked_row, clicked_col, player)
-                    if win_status(player)==True:
-                        update(f"PLAYER{player} WON!!")
-                        count += 1
-                        game_over = True
-
-                    # switches players
-                    player = player % 2 + 1
-
                     draw_XO()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r:
-                    restart_game()
-                    player = 1
-                    game_over = False
+                    x=win_status(player)
+                    if x==True:
+                        game_over = True
+                        count=player
+                        break
+                    else:
+                        # switches players
+                        check = is_display_full()
+                        if check==True:
+                            update("DRAW")
+                        else:
+                            player = player % 2 + 1
 
         pygame.display.update()
-    if game_over == False:
-        update("DRAW")
+    if count!=0:
+        win_display(f"PLAYER{player} WON!!")
+
+
+def win_display(message):
+    time.sleep(0.4)
+    update(message)
+
 
 
 def update(status):
@@ -202,6 +207,7 @@ def update(status):
                     play_game()
                 elif 600 / 2 + 100 <= mouse[0] <= 600 / 2 + 170 and 600 / 2 + 180 <= mouse[1] <= 600 / 2 + 210:
                     pygame.quit()
+
         mouse = pygame.mouse.get_pos()
 
         if 300 // 2 <= mouse[0] <= 300 // 2 + 160 and 600 / 2 + 180 <= mouse[1] <= 600 / 2 + 210:
@@ -250,4 +256,8 @@ def intro():
 
 
 if __name__ == '__main__':
-    intro()
+    try:
+        intro()
+    except(Exception):
+        print(Exception)
+
