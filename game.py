@@ -15,7 +15,7 @@ display = np.zeros((3, 3))
 line_color = (127, 127, 127)
 border = int(600 // 3)
 
-
+empty=(0,0,0,0)
 # mark square when player makes a move
 def mark_square(row, col, player):
     display[row][col] = player
@@ -185,19 +185,24 @@ def win_display(message):
 
 
 def update(status):
+    board.fill(empty)
     small_font = pygame.font.SysFont('Corbel', 50)
     text = small_font.render(status, True, (255, 255, 255))
     textRect = text.get_rect()
-    textRect.center = (600 // 2, 300 // 2)
+    textRect.center = (600 // 2, 200 // 2)
 
     while True:
-        board.fill((0, 0, 0))
+        bgi = pygame.image.load(
+            'C:/Users/HP/PycharmProjects/tic-that-song/summative-project-2022-summative_project_group_10/media/xo.PNG')
+
+        board.blit(bgi, (600 / 2 - 70, 200))
         board.blit(text, textRect)
         small_font = pygame.font.SysFont('Corbel', 30)
 
-        message1 = small_font.render('PLAY AGAIN', True, (255, 255, 255))
-        message2 = small_font.render('QUIT', True, (255, 255, 255))
-        message3 = small_font.render('SONG SUGGESTION', True, (255, 255, 255))
+        message1 = small_font.render('PLAY AGAIN', True, (0,0,0))
+        message2 = small_font.render('QUIT', True, (0,0,0))
+        message3 = small_font.render('PLAY AGAIN', True, (255,255,255))
+        message4 = small_font.render('QUIT', True, (255,255,255))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -211,29 +216,41 @@ def update(status):
         mouse = pygame.mouse.get_pos()
 
         if 300 // 2 <= mouse[0] <= 300 // 2 + 160 and 600 / 2 + 180 <= mouse[1] <= 600 / 2 + 210:
-            pygame.draw.rect(board, (0, 255, 0), [300 // 2, 600 / 2 + 180, 160, 30])
-        else:
-            pygame.draw.rect(board, (255, 0, 0), [300 // 2, 600 / 2 + 180, 160, 30])
 
-        if 600 / 2 + 100 <= mouse[0] <= 600 / 2 + 170 and 600 / 2 + 180 <= mouse[1] <= 600 / 2 + 210:
-            pygame.draw.rect(board, (0, 255, 0), [600 / 2 + 100, 600 / 2 + 180, 70, 30])
-        else:
+            pygame.draw.rect(board, (0, 255, 0), [300 // 2, 600 / 2 + 180, 160, 30])
             pygame.draw.rect(board, (255, 0, 0), [600 / 2 + 100, 600 / 2 + 180, 70, 30])
-        board.blit(message1, (300 // 2, 600 / 2 + 180))
-        board.blit(message2, (600 / 2 + 100, 600 / 2 + 180))
-        board.blit(message3, (300 // 2 + 20, 600 // 2))
+            board.blit(message2, (600 / 2 + 100, 600 / 2 + 180))
+            board.blit(message3, (300 // 2, 600 / 2 + 180))
+
+
+        elif 600 / 2 + 100 <= mouse[0] <= 600 / 2 + 170 and 600 / 2 + 180 <= mouse[1] <= 600 / 2 + 210:
+
+            pygame.draw.rect(board, (0, 255, 0), [600 / 2 + 100, 600 / 2 + 180, 70, 30])
+            pygame.draw.rect(board, (255, 0, 0), [300 // 2, 600 / 2 + 180, 160, 30])
+            board.blit(message1, (300 // 2, 600 / 2 + 180))
+            board.blit(message4, (600 / 2 + 100, 600 / 2 + 180))
+
+
+        else:
+
+            pygame.draw.rect(board, (255, 0, 0), [300 // 2, 600 / 2 + 180, 160, 30])
+            pygame.draw.rect(board, (255, 0, 0), [600 / 2 + 100, 600 / 2 + 180, 70, 30])
+            board.blit(message1, (300 // 2, 600 / 2 + 180))
+            board.blit(message2, (600 / 2 + 100, 600 / 2 + 180))
+
+
 
         pygame.display.update()
 
 
 def intro():
     font = pygame.font.Font('freesansbold.ttf', 32)
-    text = font.render('WELCOME TO TIC-THAT-SONG', True, (0, 0, 0))
+    text = font.render('WELCOME TO TIC-THAT-SONG', True, (255,255,255))
     textRect = text.get_rect()
-    textRect.center = (600 // 2, 300 // 2)
+    textRect.center = (600 // 2, 200 // 2)
 
     small_font = pygame.font.SysFont('Corbel', 50)
-    message = small_font.render('START', True, (0, 0, 0))
+
     while True:
 
         for event in pygame.event.get():
@@ -242,22 +259,30 @@ def intro():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if 600 / 2 - 60 <= mouse[0] <= 600 / 2 + 80 and 600 / 2 + 180 <= mouse[1] <= 600 / 2 + 230:
                     play_game()
-        board.fill((255, 255, 255))
+        bgi = pygame.image.load(
+            'C:/Users/HP/PycharmProjects/tic-that-song/summative-project-2022-summative_project_group_10/media/xo.PNG')
+
+        board.blit(bgi,(600 / 2 - 70,200))
+        # time.sleep(1)
         mouse = pygame.mouse.get_pos()
 
         if 600 / 2 - 60 <= mouse[0] <= 600 / 2 + 80 and 600 / 2 + 180 <= mouse[1] <= 600 / 2 + 230:
             pygame.draw.rect(board, (0, 255, 0), [600 / 2 - 60, 600 / 2 + 180, 140, 50])
+            message = small_font.render('START', True, (0,0,0))
+            board.blit(text, textRect)
+            board.blit(message, (600 / 2 - 60, 600 / 2 + 180))
 
         else:
+            message = small_font.render('START', True, (255, 255, 255))
             pygame.draw.rect(board, (255, 0, 0), [600 / 2 - 60, 600 / 2 + 180, 140, 50])
-        board.blit(text, textRect)
-        board.blit(message, (600 / 2 - 60, 600 / 2 + 180))
+            board.blit(text, textRect)
+            board.blit(message, (600 / 2 - 60, 600 / 2 + 180))
         pygame.display.update()
 
 
 if __name__ == '__main__':
-    try:
-        intro()
-    except(Exception):
-        print(Exception)
+    # try:
+    intro()
+    # except(Exception):
+    #     print(Exception)
 
