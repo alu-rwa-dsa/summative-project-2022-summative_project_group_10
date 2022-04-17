@@ -199,10 +199,11 @@ def update(status):
         board.blit(text, textRect)
         small_font = pygame.font.SysFont('Corbel', 30)
 
-        message1 = small_font.render('PLAY AGAIN', True, (0,0,0))
-        message2 = small_font.render('QUIT', True, (0,0,0))
-        message3 = small_font.render('PLAY AGAIN', True, (255,255,255))
-        message4 = small_font.render('QUIT', True, (255,255,255))
+
+        message1 = small_font.render('PLAY AGAIN', True, (255,255,255))
+        message2 = small_font.render('QUIT', True, (255,255,255))
+        message3 = small_font.render('PLAY AGAIN', True, (0, 0, 0))
+        message4 = small_font.render('QUIT', True, (0, 0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
