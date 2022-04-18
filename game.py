@@ -2,6 +2,8 @@ import pygame, sys
 import numpy as np
 import time
 
+from pygame import mixer
+
 pygame.init()
 
 interface_width = 600
@@ -14,6 +16,8 @@ board.fill((0, 0, 0))
 display = np.zeros((3, 3))
 line_color = (127, 127, 127)
 border = int(600 // 3)
+
+mixer.music.load("media/kid_s_game_children_s_music_instrumental_music_for_kids_mp3_102.mp3")
 
 empty=(0,0,0,0)
 # mark square when player makes a move
@@ -251,7 +255,8 @@ def intro():
     textRect.center = (600 // 2, 200 // 2)
 
     small_font = pygame.font.SysFont('Corbel', 50)
-
+    bgm = mixer.Sound("media/kid_s_game_children_s_music_instrumental_music_for_kids_mp3_102.mp3")
+    bgm.play()
     while True:
 
         for event in pygame.event.get():
@@ -260,8 +265,8 @@ def intro():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if 600 / 2 - 60 <= mouse[0] <= 600 / 2 + 80 and 600 / 2 + 180 <= mouse[1] <= 600 / 2 + 230:
                     play_game()
-        bgi = pygame.image.load(
-            'C:/Users/HP/PycharmProjects/tic-that-song/summative-project-2022-summative_project_group_10/media/xo.PNG')
+
+        bgi = pygame.image.load('media/xo.PNG')
 
         board.blit(bgi,(600 / 2 - 70,200))
         # time.sleep(1)
