@@ -21,5 +21,13 @@ Regardless of the outcome, players can either replay or quit.
 ### Challenges of this Application:
 It is quite difficult to defeat the computer, since it goes for the next optimal move, compared to plannijg it with someone who isn't that 
 skilled in game strategy.
-Also, most kids who come from low-income families, might not be able to access this application, as they may be unable to afford a technological devices/
+Also, most kids who come from low-income families, might not be able to access this application, as they may be unable to afford a technological devices.
+
+## Project SetUp
+### Required Modules
+Pygame<br/>
+Numpy<br/>
+Sys<br/>
+Time<br/>
+
 
